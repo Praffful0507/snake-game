@@ -6,7 +6,7 @@ const moveSound = new Audio('./music/move.mp3');
 const musicSound = new Audio('./music/music.mp3');
 let lasttimepant = 0;
 let score = 0;
-let speed = 2;
+let speed = 5;
 
 let snakeArr = [
     {x: 13, y : 15}
@@ -22,8 +22,17 @@ function main(ctime){
     lasttimepant = ctime;
     gameEngine();
 }
-function isCollide(snakeArr) {
-    return false;
+function isCollide(snake) {
+    //If you bump into yourself
+    for(let i = 1; i< snakeArr.length; i++){
+        if(snake[i].x === snake[0].x && snake[i].y === snake[0].y){
+            return true;
+        }
+        // if you bump into the wall
+        if(snake[0].x >= 18 || snake[0].x <= 0 && snake[0].y >= 18 || snake[0].y <= 0 ){
+            return true;
+        }
+    }
 }
 function gameEngine(){
     //updating snake array and food 
@@ -38,15 +47,17 @@ function gameEngine(){
     }
     // if you have eaten the food, increment the score and regenarate the food
     if(snakeArr[0].y === food.y && snakeArr[0].x === food.x){
+        foodSound.play();
         snakeArr.unshift({x: snakeArr[0].x + direction.x, y: snakeArr[0].y + direction.y });
+        score++;
         let a = 2;
         let b = 16;
         food = {x: Math.round(a+ (b-a) * Math.random()), y: Math.round(a+ (b-a) * Math.random())}
     }
 
     // moving the snake 
-    for (let i = snakeArr.length - 2 ; i > 0; i++) {
-        const element = array[i];
+    for (let i = snakeArr.length - 2 ; i >=  0; i--) {
+        //const element = array[i]; 
         snakeArr[i+1] = {...snakeArr[i]};    
     }
 
