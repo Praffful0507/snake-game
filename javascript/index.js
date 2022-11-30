@@ -1,15 +1,15 @@
 //Game constant and variable
 let direction = {x:0 , y:0};
-const foodSound = new Audio('food.mp3');
-const gameoverSound = new Audio('gameover.mp3');
-const moveSound = new Audio('move.mp3');
-const musicSound = new Audio('music.mp3');
+const foodSound = new Audio('./music/food.mp3');
+const gameoverSound = new Audio('./music/gameover.mp3');
+const moveSound = new Audio('./music/move.mp3');
+const musicSound = new Audio('./music/music.mp3');
 let lasttimepant = 0;
+let score = 0;
 let speed = 2;
 
 let snakeArr = [
-    {x: 13, y : 15},
-    {x:14, y:15}
+    {x: 13, y : 15}
 ]
 let food = {x:5, y : 7};
 // game function
@@ -22,10 +22,36 @@ function main(ctime){
     lasttimepant = ctime;
     gameEngine();
 }
-
+function isCollide(snakeArr) {
+    return false;
+}
 function gameEngine(){
     //updating snake array and food 
+    if(isCollide(snakeArr)){
+        gameoverSound.play();
+        musicSound.pause();
+        direction = {x:0, y:0};
+        alert("game over. press ony key to play again");
+        snakeArr = [{x:13, y:15}];
+        musicSound.play();
+        score = 0;
+    }
+    // if you have eaten the food, increment the score and regenarate the food
+    if(snakeArr[0].y === food.y && snakeArr[0].x === food.x){
+        snakeArr.unshift({x: snakeArr[0].x + direction.x, y: snakeArr[0].y + direction.y });
+        let a = 2;
+        let b = 16;
+        food = {x: Math.round(a+ (b-a) * Math.random()), y: Math.round(a+ (b-a) * Math.random())}
+    }
 
+    // moving the snake 
+    for (let i = snakeArr.length - 2 ; i > 0; i++) {
+        const element = array[i];
+        snakeArr[i+1] = {...snakeArr[i]};    
+    }
+
+    snakeArr[0].x += direction.x;
+    snakeArr[0].y += direction.y;
     // display the snake 
     board.innerHTML = "";
     snakeArr.forEach((e , index) => {
@@ -58,15 +84,24 @@ window.addEventListener('keydown', e =>{
   switch (e.key) {
     case "ArrowUp":
         console.log("ArrowUP");
+        direction.x = 0;
+        direction.y = -1;
+
         break;
     case "ArrowDown":
         console.log("ArrowDOWN");
+        direction.x = 0;
+        direction.y = 1;
         break;
     case "ArrowRight":
         console.log("ArrowRIGHT");
+        direction.x = 1;
+        direction.y = 0;
         break;
     case "ArrowLeft":
         console.log("ArrowLEFT");
+        direction.x = -1;
+        direction.y = 0;
         break;
     default:
         break;
