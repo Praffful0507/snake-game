@@ -50,6 +50,7 @@ function gameEngine(){
         foodSound.play();
         snakeArr.unshift({x: snakeArr[0].x + direction.x, y: snakeArr[0].y + direction.y });
         score++;
+        scoreboard.innerHTML = "Score " + score;
         let a = 2;
         let b = 16;
         food = {x: Math.round(a+ (b-a) * Math.random()), y: Math.round(a+ (b-a) * Math.random())}

@@ -21,7 +21,13 @@ body{
     grid-template-rows: repeat(18, 1fr);
     grid-template-columns: repeat(18, 1fr);
 }
-
+#scoreboard{
+    position: absolute;
+    top: 9px;
+    right: 200px;
+    font-size: 39px;
+    font-weight: bold;
+}
 .food{
     background-color: yellow;
 }
